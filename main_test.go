@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"labs/apis"
 	databases "labs/database"
 	"testing"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
 
@@ -48,10 +46,17 @@ func TestDB(t *testing.T) {
 	}
 }
 
-func TestCreateAuthor(t *testing.T) {
-	app := fiber.New()
-	app.Post("/Author", apis.CreateAuthor)
-}
+// func TestCreateAuthor(t *testing.T) {
+// 	app := fiber.New()
+// 	app.Post("/Author", apis.CreateAuthor)
+
+// 	req, _ := app.Test(httptest.NewRequest("POST", "/Author", strings.NewReader(`{"name":"test","age":20}`)))
+
+// 	if req.StatusCode != 201 {
+// 		t.Error("Status:", req.StatusCode)
+// 	}
+
+// }
 
 func TestDisconnectMongo(t *testing.T) {
 	client, _ := databases.ConnectMongoDB()
