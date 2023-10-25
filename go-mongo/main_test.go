@@ -46,18 +46,6 @@ func TestDB(t *testing.T) {
 	}
 }
 
-// func TestCreateAuthor(t *testing.T) {
-// 	app := fiber.New()
-// 	app.Post("/Author", apis.CreateAuthor)
-
-// 	req, _ := app.Test(httptest.NewRequest("POST", "/Author", strings.NewReader(`{"name":"test","age":20}`)))
-
-// 	if req.StatusCode != 201 {
-// 		t.Error("Status:", req.StatusCode)
-// 	}
-
-// }
-
 func TestDisconnectMongo(t *testing.T) {
 	client, _ := databases.ConnectMongoDB()
 	err := databases.DisconnectFromMongo(client)

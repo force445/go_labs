@@ -62,11 +62,3 @@ func GetAAuthor(c *fiber.Ctx) error {
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{"status": http.StatusOK, "message": "Success", "data": author})
 }
-
-// func UpdateAuthor(c *fiber.Ctx) error {
-// 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-// 	id := c.Params("ID")
-// 	var author models.Author
-// 	defer cancel()
-
-// }
