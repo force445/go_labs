@@ -1,8 +1,6 @@
 package model
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -47,24 +45,40 @@ func (location *Location) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
-// One station has many drones
-type Drone struct {
-	gorm.Model
-	ID              uuid.UUID    `gorm:"type:uuid;"`
-	DroneID         string       `json:"drone_id"`
-	SerialNo        string       `json:"serial_no"`
-	LimitWeight     float64      `json:"limit_weight"`
-	MaintenanceDate time.Weekday `json:"maintenance_date"`
-	StationID       uuid.UUID    `gorm:"type:uuid;"`
-}
-
 type Station struct {
 	gorm.Model
-	ID        uuid.UUID `gorm:"type:uuid;"`
-	StationID string    `json:"station_id"`
-	Address   string    `json:"address"`
-	City      string    `json:"city"`
-	State     string    `json:"state"`
-	Zip       string    `json:"zip"`
-	Drone     []Drone   `gorm:"foreignKey:StationID"`
+	ID      uuid.UUID `gorm:"type:uuid;"`
+	Address string    `json:"address"`
+	City    string    `json:"city"`
+	State   string    `json:"state"`
+	Zip     string    `json:"zip"`
+	Drone   []Drone   `gorm:"foreignKey:StationID"`
+}
+
+type Stations struct {
+	Stations []Station `json:"stations"`
+}
+
+func (station *Station) BeforeCreate(tx *gorm.DB) (err error) {
+	uuid := uuid.New()
+	station.ID = uuid
+	return
+}
+
+type Drone struct {
+	gorm.Model
+	ID          uuid.UUID `gorm:"type:uuid;"`
+	StationID   uuid.UUID `gorm:"type:uuid;"`
+	SerialNo    string    `json:"serial_no"`
+	LimitWeight float64   `json:"limit_weight"`
+}
+
+type Drones struct {
+	Drones []Drone `json:"drones"`
+}
+
+func (drone *Drone) BeforeCreate(tx *gorm.DB) (err error) {
+	uuid := uuid.New()
+	drone.ID = uuid
+	return
 }

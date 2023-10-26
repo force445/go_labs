@@ -37,7 +37,10 @@ func Connect() {
 	log.Println("Database connected")
 	db.Logger = db.Logger.LogMode(logger.Info)
 	log.Println("run migration")
-	db.AutoMigrate(&model.User{}, &model.Location{}, &model.Drone{})
+	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Location{})
+	db.AutoMigrate(&model.Station{})
+	db.AutoMigrate(&model.Drone{})
 
 	DB = Dbinstance{
 		Db: db,
