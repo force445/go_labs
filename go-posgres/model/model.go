@@ -1,84 +1,91 @@
 package model
 
 import (
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
-type User struct {
+type Member struct {
 	gorm.Model
-	ID       uuid.UUID  `gorm:"type:uuid;"`
-	Username string     `json:"username"`
-	Email    string     `json:"email"`
-	Password string     `json:"password"`
-	Phone    string     `json:"phone"`
-	Location []Location `gorm:"foreignKey:UserID"`
+	ID          int          `gorm:"primaryKey"`
+	Fullname    string       `json:"username"`
+	Birthday    string       `json:"birthday"`
+	Address     string       `json:"address"`
+	Province    string       `json:"province"`
+	City        string       `json:"city"`
+	Zipcode     string       `json:"zipcode"`
+	Email       string       `json:"email"`
+	Phone       string       `json:"phone"`
+	CreatedAt   string       `json:"createdat"`
+	UpdatedAt   string       `json:"updatedat"`
+	CreditCards []CreditCard `gorm:"foreignKey:MemberID"`
 }
 
-type Users struct {
-	Users []User `json:"users"`
+type Members struct {
+	Members []Member `json:"members"`
 }
 
-func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
-	uuid := uuid.New()
-	user.ID = uuid
-	return
-}
-
-type Location struct {
+type CreditCard struct {
 	gorm.Model
-	ID      uuid.UUID `gorm:"type:uuid;"`
-	UserID  uuid.UUID `gorm:"type:uuid;"`
-	Address string    `json:"address"`
-	City    string    `json:"city"`
-	State   string    `json:"state"`
-	Zip     string    `json:"zip"`
+	ID        int    `gorm:"primaryKey"`
+	CardName  string `json:"cardname"`
+	CardNo    string `json:"cardno"`
+	Expire    string `json:"expire"`
+	Cvv       string `json:"cvv"`
+	CreatedAt string `json:"createdat"`
+	UpdatedAt string `json:"updatedat"`
+	MemberID  int    `json:"memberid"`
 }
 
-type Locations struct {
-	Locations []Location `json:"locations"`
+type CreditCards struct {
+	CreditCards []CreditCard `json:"creditcards"`
 }
 
-func (location *Location) BeforeCreate(tx *gorm.DB) (err error) {
-	uuid := uuid.New()
-	location.ID = uuid
-	return
-}
-
-type Station struct {
+type Order struct {
 	gorm.Model
-	ID      uuid.UUID `gorm:"type:uuid;"`
-	Address string    `json:"address"`
-	City    string    `json:"city"`
-	State   string    `json:"state"`
-	Zip     string    `json:"zip"`
-	Drone   []Drone   `gorm:"foreignKey:StationID"`
+	ID          int     `gorm:"primaryKey"`
+	Totalamount float64 `json:"totalamount"`
+	Orderdate   string  `json:"orderdate"`
+	MemberID    int     `json:"memberid"`
+	BookID      int     `json:"bookid"`
 }
 
-type Stations struct {
-	Stations []Station `json:"stations"`
+type Orders struct {
+	Orders []Order `json:"orders"`
 }
 
-func (station *Station) BeforeCreate(tx *gorm.DB) (err error) {
-	uuid := uuid.New()
-	station.ID = uuid
-	return
-}
-
-type Drone struct {
+type Book struct {
 	gorm.Model
-	ID          uuid.UUID `gorm:"type:uuid;"`
-	StationID   uuid.UUID `gorm:"type:uuid;"`
-	SerialNo    string    `json:"serial_no"`
-	LimitWeight float64   `json:"limit_weight"`
+	ID          int         `gorm:"primaryKey"`
+	Title       string      `json:"title"`
+	Price       float64     `json:"price"`
+	Stock       int         `json:"stock"`
+	AuthorID    []Author    `gorm:"foreignKey:BookID"`
+	PublisherID []Publisher `gorm:"foreignKey:BookID"`
 }
 
-type Drones struct {
-	Drones []Drone `json:"drones"`
+type Books struct {
+	Books []Book `json:"books"`
 }
 
-func (drone *Drone) BeforeCreate(tx *gorm.DB) (err error) {
-	uuid := uuid.New()
-	drone.ID = uuid
-	return
+type Author struct {
+	gorm.Model
+	ID        int    `gorm:"primaryKey"`
+	Fullname  string `json:"fullname"`
+	Biography string `json:"biography"`
+}
+
+type Authors struct {
+	Authors []Author `json:"authors"`
+}
+
+type Publisher struct {
+	gorm.Model
+	ID      int    `gorm:"primaryKey"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
+	Phone   string `json:"phone"`
+}
+
+type Publishers struct {
+	Publishers []Publisher `json:"publishers"`
 }
