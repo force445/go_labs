@@ -36,9 +36,9 @@ func Connect() {
 	db.Logger = db.Logger.LogMode(logger.Info)
 	log.Println("run migration")
 	db.AutoMigrate(&model.Member{})
+	db.AutoMigrate(&model.Book{})
 	db.AutoMigrate(&model.CreditCard{})
 	db.AutoMigrate(&model.Order{})
-	db.AutoMigrate(&model.Book{})
 	db.AutoMigrate(&model.Author{})
 	db.AutoMigrate(&model.Publisher{})
 

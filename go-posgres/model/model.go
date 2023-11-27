@@ -7,7 +7,7 @@ import (
 type Member struct {
 	gorm.Model
 	ID          int          `gorm:"primaryKey"`
-	Fullname    string       `json:"username"`
+	Fullname    string       `json:"Fullname"`
 	Birthday    string       `json:"birthday"`
 	Address     string       `json:"address"`
 	Province    string       `json:"province"`
@@ -15,8 +15,6 @@ type Member struct {
 	Zipcode     string       `json:"zipcode"`
 	Email       string       `json:"email"`
 	Phone       string       `json:"phone"`
-	CreatedAt   string       `json:"createdat"`
-	UpdatedAt   string       `json:"updatedat"`
 	CreditCards []CreditCard `gorm:"foreignKey:MemberID"`
 }
 
@@ -26,14 +24,12 @@ type Members struct {
 
 type CreditCard struct {
 	gorm.Model
-	ID        int    `gorm:"primaryKey"`
-	CardName  string `json:"cardname"`
-	CardNo    string `json:"cardno"`
-	Expire    string `json:"expire"`
-	Cvv       string `json:"cvv"`
-	CreatedAt string `json:"createdat"`
-	UpdatedAt string `json:"updatedat"`
-	MemberID  int    `json:"memberid"`
+	ID       int    `gorm:"primaryKey"`
+	CardName string `json:"cardname"`
+	CardNo   string `json:"cardno"`
+	Expire   string `json:"expire"`
+	Cvv      string `json:"cvv"`
+	MemberID int    `json:"memberid"`
 }
 
 type CreditCards struct {
@@ -72,6 +68,7 @@ type Author struct {
 	ID        int    `gorm:"primaryKey"`
 	Fullname  string `json:"fullname"`
 	Biography string `json:"biography"`
+	BookID    int    `json:"bookid"`
 }
 
 type Authors struct {
@@ -84,6 +81,7 @@ type Publisher struct {
 	Name    string `json:"name"`
 	Address string `json:"address"`
 	Phone   string `json:"phone"`
+	BookID  int    `json:"bookid"`
 }
 
 type Publishers struct {

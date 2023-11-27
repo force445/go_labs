@@ -43,3 +43,22 @@ func UpdateMember(c *fiber.Ctx) error {
 	db.Save(&member)
 	return c.JSON(member)
 }
+
+func DeleteMember(c *fiber.Ctx) error {
+	db := database.DB.Db
+	member := new(model.Member)
+	id := c.Params("id")
+	db.First(&member, id)
+	db.Delete(&member)
+	return c.JSON(member)
+}
+
+func PostCreditCard(c *fiber.Ctx) error {
+	db := database.DB.Db
+	creditCard := new(model.CreditCard)
+	if err := c.BodyParser(creditCard); err != nil {
+		return err
+	}
+	db.Create(&creditCard)
+	return c.JSON(creditCard)
+}
