@@ -7,7 +7,7 @@ import (
 type Member struct {
 	gorm.Model
 	ID          int          `gorm:"primaryKey"`
-	Fullname    string       `json:"Fullname"`
+	Fullname    string       `json:"fullname"`
 	Birthday    string       `json:"birthday"`
 	Address     string       `json:"address"`
 	Province    string       `json:"province"`
@@ -15,7 +15,8 @@ type Member struct {
 	Zipcode     string       `json:"zipcode"`
 	Email       string       `json:"email"`
 	Phone       string       `json:"phone"`
-	CreditCards []CreditCard `gorm:"foreignKey:MemberID"`
+	CreditCards []CreditCard `gorm:"foreignKey:MemberID; constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
+	Orders      []Order      `gorm:"foreignKey:MemberID; constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 type Members struct {
@@ -29,7 +30,7 @@ type CreditCard struct {
 	CardNo   string `json:"cardno"`
 	Expire   string `json:"expire"`
 	Cvv      string `json:"cvv"`
-	MemberID int    `json:"memberid"`
+	MemberID int    `json:"memberID"`
 }
 
 type CreditCards struct {
@@ -41,8 +42,8 @@ type Order struct {
 	ID          int     `gorm:"primaryKey"`
 	Totalamount float64 `json:"totalamount"`
 	Orderdate   string  `json:"orderdate"`
-	MemberID    int     `json:"memberid"`
-	BookID      int     `json:"bookid"`
+	MemberID    int     `json:"memberID"`
+	Books       []Book  `gorm:"foreignKey:OrderID; constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 type Orders struct {
@@ -51,12 +52,13 @@ type Orders struct {
 
 type Book struct {
 	gorm.Model
-	ID          int         `gorm:"primaryKey"`
-	Title       string      `json:"title"`
-	Price       float64     `json:"price"`
-	Stock       int         `json:"stock"`
-	AuthorID    []Author    `gorm:"foreignKey:BookID"`
-	PublisherID []Publisher `gorm:"foreignKey:BookID"`
+	ID          int     `gorm:"primaryKey"`
+	Title       string  `json:"title"`
+	Price       float64 `json:"price"`
+	Stock       int     `json:"stock"`
+	OrderID     int     `json:"orderID"`
+	AuthorID    int     `json:"authorID"`
+	PublisherID int     `json:"publisherID"`
 }
 
 type Books struct {
@@ -68,7 +70,7 @@ type Author struct {
 	ID        int    `gorm:"primaryKey"`
 	Fullname  string `json:"fullname"`
 	Biography string `json:"biography"`
-	BookID    int    `json:"bookid"`
+	Books     []Book `gorm:"foreignKey:AuthorID; constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 type Authors struct {
@@ -81,7 +83,7 @@ type Publisher struct {
 	Name    string `json:"name"`
 	Address string `json:"address"`
 	Phone   string `json:"phone"`
-	BookID  int    `json:"bookid"`
+	Books   []Book `gorm:"foreignKey:PublisherID; constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 type Publishers struct {
