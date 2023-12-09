@@ -139,3 +139,49 @@ func DeleteOrder(c *fiber.Ctx) error {
 	db.Delete(&order)
 	return c.JSON(order)
 }
+
+func PostBook(c *fiber.Ctx) error {
+	db := database.DB.Db
+	book := new(model.Book)
+	if err := c.BodyParser(book); err != nil {
+		return err
+	}
+	db.Create(&book)
+	return c.JSON(book)
+}
+
+func GetBook(c *fiber.Ctx) error {
+	db := database.DB.Db
+	book := new(model.Book)
+	id := c.Params("id")
+	db.First(&book, id)
+	return c.JSON(book)
+}
+
+func GetAllBook(c *fiber.Ctx) error {
+	db := database.DB.Db
+	var books []model.Book
+	db.Find(&books)
+	return c.JSON(books)
+}
+
+func UpdateBook(c *fiber.Ctx) error {
+	db := database.DB.Db
+	book := new(model.Book)
+	id := c.Params("id")
+	db.First(&book, id)
+	if err := c.BodyParser(book); err != nil {
+		return err
+	}
+	db.Save(&book)
+	return c.JSON(book)
+}
+
+func DeleteBook(c *fiber.Ctx) error {
+	db := database.DB.Db
+	book := new(model.Book)
+	id := c.Params("id")
+	db.First(&book, id)
+	db.Delete(&book)
+	return c.JSON(book)
+}

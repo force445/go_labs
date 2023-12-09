@@ -5,6 +5,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
+
+	"go-posgres/handler"
 )
 
 func ValidateStruct(data interface{}) (bool, []string) {
@@ -27,6 +29,6 @@ func ValidateStruct(data interface{}) (bool, []string) {
 	return true, nil
 }
 
-// func ValidateCreditCard() {
-
-// }
+func ValidateCreditCard() {
+	creditcard := handler.GetCreditCard()
+}
