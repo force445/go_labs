@@ -65,6 +65,6 @@ func luhnAlgorithm(cardNumber string) bool {
 		sum += digit
 		alternate = !alternate
 	}
-
+	fmt.Println(sum)
 	return sum%10 == 0
 }

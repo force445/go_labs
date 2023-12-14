@@ -3,6 +3,7 @@ package handler
 import (
 	"go-posgres/database"
 	"go-posgres/model"
+	"go-posgres/validator"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -29,8 +30,7 @@ func GetMember(c *fiber.Ctx) error {
 func GetAllMember(c *fiber.Ctx) error {
 	db := database.DB.Db
 	var members []model.Member
-	db.Preload("CreditCards").Find(&members)
-	db.Preload("Orders").Find(&members)
+	db.Preload("CreditCards").Preload("Orders").Find(&members)
 	return c.JSON(members)
 }
 
@@ -61,6 +61,12 @@ func PostCreditCard(c *fiber.Ctx) error {
 	if err := c.BodyParser(creditCard); err != nil {
 		return err
 	}
+
+	isValid, validationErrors := validator.ValidateCreditCard(*creditCard)
+	if !isValid {
+		return c.Status(400).JSON(fiber.Map{"errors": validationErrors})
+	}
+
 	db.Create(&creditCard)
 	return c.JSON(creditCard)
 }
@@ -116,6 +122,7 @@ func GetAllOrder(c *fiber.Ctx) error {
 	db := database.DB.Db
 	var orders []model.Order
 	db.Find(&orders)
+	db.Preload("Books")
 	return c.JSON(orders)
 }
 
